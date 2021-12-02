@@ -14,5 +14,5 @@ and I might even try to finish all the challenges this year!
 Using `BenchmarkTools.jl` solving both parts 1 and 2:
 | Day | Time | Allocated memory |
 |----:|-----:|-----------------:|
-| 1 | 244.900 μs | 124.92 KiB |
-| 2 | 695.300 μs | 532.53 KiB |
+| 1 | 243.500 μs | 124.92 KiB |
+| 2 | 466.100 μs | 290.09 KiB |
