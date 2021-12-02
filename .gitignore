@@ -31,3 +31,6 @@ Manifest.toml
 
 # AOC Session key - IGNORE!
 .session
+
+# AOC cached input
+.cache
