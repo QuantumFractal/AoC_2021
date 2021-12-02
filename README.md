@@ -11,7 +11,7 @@ and I might even try to finish all the challenges this year!
 
 ## Benchmarks
 
-Using `BenchmarkTools.jl` solving both parts 1 and 2:
+Using `BenchmarkTools.jl` solving both parts of each day:
 | Day | Time | Allocated memory |
 |----:|-----:|-----------------:|
 | 1 | 243.500 μs | 124.92 KiB |
