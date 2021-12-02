@@ -17,8 +17,6 @@ for day in solvedDays
     include(joinpath(@__DIR__, "days/", "day$ds.jl"))
 end
 
-println(AoC_2021.day1.solve())
-
 # Benchmark a list of different problems:
 function benchmark(days=solvedDays)
     results = []

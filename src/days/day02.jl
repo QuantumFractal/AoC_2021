@@ -32,19 +32,16 @@ function part2(values::Vector{SubString{String}})
     horizontal = 0
     aim = 0
 
-    commands = Dict(
-        "forward" => x -> begin 
-            horizontal += x
-            depth += aim * x
-        end,
-        "down" => x -> aim += x,
-        "up" => x -> aim -= x
-    )
-
     for command in values
-        tokens = split(command)
-        direction, magnitude = tokens[1], parse(Int, tokens[2])
-        commands[direction](magnitude)
+        direction, magnitude = command[1:2], parse(Int, command[end-1:end])
+        if direction == "fo"
+            horizontal += magnitude
+            depth += aim * magnitude
+        elseif direction == "do"
+            aim += magnitude
+        elseif  direction == "up"
+            aim -= magnitude
+        end
     end
 
     return depth * horizontal
