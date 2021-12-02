@@ -1,0 +1,7 @@
+name = "AoC_2021"
+uuid = "8f58fde6-9dea-4a36-8abb-1a72002a1a89"
+authors = ["Thomas Moll <tom@moll.dev>"]
+version = "0.1.0"
+
+[deps]
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
