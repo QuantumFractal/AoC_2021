@@ -6,7 +6,7 @@ using Printf
 include("utils.jl")
 export getRawInput
 
-solvedDays = 1:2
+solvedDays = 1:3
 
 """ Stole goggle's AoC exporting / benchmarking from last year
     https://github.com/goggle/AdventOfCode2020.jl/blob/master/src/AdventOfCode2020.jl
