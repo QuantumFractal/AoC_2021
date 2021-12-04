@@ -6,11 +6,11 @@ using Printf
 include("utils.jl")
 export getRawInput
 
-solvedDays = 1:4
-
-""" Stole goggle's AoC exporting / benchmarking from last year
+""" Stole goggle's AoC exporting / benchmarking from last year.
+    Thanks!
     https://github.com/goggle/AdventOfCode2020.jl/blob/master/src/AdventOfCode2020.jl
 """
+solvedDays = 1:4
 
 for day in solvedDays
     ds = @sprintf("%02d", day)

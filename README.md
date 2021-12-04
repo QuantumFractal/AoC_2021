@@ -22,3 +22,11 @@ Using `BenchmarkTools.jl` solving both parts of each day:
 | 2 | 471.000 μs | 290.09 KiB |
 | 3 | 1.315 ms | 1.45 MiB |
 | 4 | 72.666 ms | 534.76 MiB |
+
+## Usage
+
+```
+echo "<your session token>" >> .session
+julia --project=.
+julia> using AoC2021
+```

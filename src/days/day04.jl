@@ -4,58 +4,113 @@ using AoC_2021
 using Base.Iterators
 using StatsBase
 
-make_boards(test_string) = collect(map(make_board, Iterators.partition(filter(r->r != "", split(test_string, r"\n")[2:end]), 5)))
-make_board(rows) = hcat(map(row -> parse.(Int, split(strip(row), r"\s+")), rows)...)
-get_draws(test_string) = parse.(Int, split(split(test_string, "\n")[1], ","))
+""" So I noticed that each board has no duplicates, so we can just represent
+    each board as a Dict mapping the number to an index, making it super
+    fast to lookup! This will break for more
+"""
 
-compute_score(winner, hitlist) = sum(getindex(winner, filter(idx -> idx ∉ hitlist, vec(CartesianIndices(winner)))))
-
-check_dim(hits, dim) = any(Iterators.map(x -> x[2] >= 5, countmap(getindex.(hits, dim))))
+const BOARD_SIZE = 5
+const BOARD_IDX = CartesianIndices((BOARD_SIZE,  BOARD_SIZE))
 
 function solve(input::String = getRawInput(4))
-    boards = make_boards(input)
-    draws = get_draws(input)
-    return part2(boards, draws)
+    first, rest... = split(input, "\n\n")
+    draws = parse.(Int, split(first, ","))
+
+    boards, reverse_index = make_boards(rest)
+    part1_answer = part1(boards, reverse_index, draws)
+
+    # Re-parse the boards / index since we modify them.
+    boards, reverse_index = make_boards(rest)
+    part2_answer = part2(boards, reverse_index, draws)
+
+    return [part1_answer, part2_answer]
 end
 
 
-function part1(boards, draws)
-    hitlist = [Vector{CartesianIndex}() for x in 1:length(boards)]
+""" 
+"""
+function make_boards(rows)
+    boards = Vector(undef, length(rows))
+    reverse_index = Dict{Int64, Vector{Int64}}()
 
-    for draw in draws
-        for (i, board) in enumerate(board)
-            push!(hitlist[i], findall(x -> x == draw, boards[i])...)
-            if check_dim(hitlist[i], 1) || check_dim(hitlist[i], 2)
-                # winner winner
-                return compute_score(boards[i], hitlist[i]) * draw
+    for (board_idx, row) in enumerate(rows)
+        board = Dict{Int64, Vector{CartesianIndex}}()
+        for (idx, value) in enumerate(parse.(Int, split(strip(row), r"\s+")))
+            # Build the forward index
+            if value in keys(board)
+                push!(board[value], BOARD_IDX[idx])
+            else
+                board[value] = [BOARD_IDX[idx]]
+            end
+
+            # aaaand the reverse index
+            if value in keys(reverse_index)
+                push!(reverse_index[value], board_idx)
+            else
+                reverse_index[value] = [board_idx]
             end
         end
+        boards[board_idx] = board
+    end
+    return boards, reverse_index
+end
+
+
+""" TODO explain this
+"""
+function hit!(hitlist, b_idx, h_idx)
+    hitlist[h_idx[1],            b_idx] += 1
+    hitlist[h_idx[2]+BOARD_SIZE, b_idx] += 1
+end
+
+check_win(hitlist, b_idx) = any(map(c -> c == BOARD_SIZE, hitlist[:, b_idx]))
+
+function part1(boards, reverse_index, draws)
+    hitlist = zeros(Int64, BOARD_SIZE * 2, length(boards))
+
+    for draw in draws
+        for board_idx in reverse_index[draw]
+            board = boards[board_idx]
+
+            for pos in board[draw]
+                hit!(hitlist, board_idx, pos)
+            end
+
+            pop!(board, draw)
+
+            if check_win(hitlist, board_idx)
+                return sum(keys(board)) * draw
+            end
+        end
+
+        pop!(reverse_index, draw)
     end
     return -1
 end
 
 
-function part2(boards, draws)
-    hitlist = [Vector{CartesianIndex}() for x in 1:length(boards)]
-    not_won = collect(1:length(boards))
+function part2(boards, reverse_index, draws)
+    hitlist = zeros(Int64, BOARD_SIZE * 2, length(boards))
+    winners = []
 
     for draw in draws
-        for (i, board) in enumerate(boards)
-            push!(hitlist[i], findall(x -> x == draw, board)...)
-        end
+        for board_idx in reverse_index[draw]
+            board = boards[board_idx]
 
-        for i in not_won
-            if check_dim(hitlist[i], 1) || check_dim(hitlist[i], 2)
-                # winner winner
-                if length(not_won) == 1
-                    loser_idx = not_won[1]
-                    return compute_score(boards[loser_idx], hitlist[loser_idx]) * draw
-                else
-                    popat!(not_won, findall(x->x==i, not_won)[1])
+            for pos in pop!(board, draw)
+                hit!(hitlist, board_idx, pos)
+            end
+
+            if board_idx ∉ winners && check_win(hitlist, board_idx)
+                push!(winners, board_idx)
+
+                if length(winners) == length(boards)
+                    return sum(keys(board)) * draw
                 end
             end
         end
 
+        pop!(reverse_index, draw)
     end
     return -1
 end
