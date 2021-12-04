@@ -15,13 +15,16 @@ Finished days: 1, 2, 3, 4
 
 ## Benchmarks
 
+
 Using `BenchmarkTools.jl` solving both parts of each day:
+
+Run on Julia 1.6.1 + Ryzen 9 5900X 12-Core (~4Ghz)
 | Day | Time | Allocated memory |
 |----:|-----:|-----------------:|
-| 1 | 243.600 μs | 124.92 KiB |
-| 2 | 471.000 μs | 290.09 KiB |
-| 3 | 1.315 ms | 1.45 MiB |
-| 4 | 72.666 ms | 534.76 MiB |
+| 1 | 245.600 μs | 124.92 KiB |  
+| 2 | 473.700 μs | 290.09 KiB |  
+| 3 | 1.307 ms | 1.45 MiB |      
+| 4 | 2.861 ms | 2.68 MiB |
 
 ## Usage
 

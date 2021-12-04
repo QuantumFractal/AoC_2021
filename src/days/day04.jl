@@ -2,7 +2,6 @@ module day04
 
 using AoC_2021
 using Base.Iterators
-using StatsBase
 
 """ So I noticed that each board has no duplicates, so we can just represent
     each board as a Dict mapping the number to an index, making it super
