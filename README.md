@@ -11,13 +11,14 @@ and I might even try to finish all the challenges this year!
 
 ## Updates
 
-Finished days: 1, 2, 3
+Finished days: 1, 2, 3, 4
 
 ## Benchmarks
 
 Using `BenchmarkTools.jl` solving both parts of each day:
 | Day | Time | Allocated memory |
 |----:|-----:|-----------------:|
-| 1 | 241.800 μs | 124.92 KiB |
-| 2 | 473.400 μs | 290.09 KiB |
-| 3 | 1.298 ms | 1.45 MiB |
+| 1 | 243.600 μs | 124.92 KiB |
+| 2 | 471.000 μs | 290.09 KiB |
+| 3 | 1.315 ms | 1.45 MiB |
+| 4 | 72.666 ms | 534.76 MiB |
