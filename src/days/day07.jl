@@ -1,39 +1,29 @@
 module day07
 
 using AoC_2021
-using StatsBase
-
-function get_fuel(s, e)
-    last = 0
-    fuel = 0
-    for i in 1:abs(s - e)
-        last = last + 1
-        fuel += last
-    end
-    return fuel
-end
-
+using Statistics
 
 function solve(input::String = getRawInput(7))
-    test_data = parse.(Int, split(input, ","))
-    m_range = findmin(test_data)[1]:findmax(test_data)[1]
+    data = parse.(Int, split(input, ","))
+    return [part1(data), part2(data)]
+end
 
-    least = typemax(Int32)
-    for i in m_range
-        total = 0
-        for val in test_data
+function part1(data)
+    _median = median(data)
+    return Int(sum(map(x -> abs(x - _median), data)))
+end
 
-            fuel = get_fuel(val, i)
-            total += fuel
-        end
-        least = min(least, total)
-    end
+# Reduced "newtonian" to a closed form equation for simplicity.
+function part2(data)
+    avg = mean(data)
+    avg_low, avg_hi = floor(avg), ceil(avg)
 
-    return least
+    project(x) = x * (x + 1) / 2
+    under = Int(sum(map(x -> project(abs(x - avg_hi)), data)))
+    over  = Int(sum(map(x -> project(abs(x - avg_low)), data)))
+
+    return min(over, under)
 end
 
 
-
-
-
-end
+end # module

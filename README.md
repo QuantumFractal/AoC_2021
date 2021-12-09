@@ -13,7 +13,7 @@ and I might even try to finish all the challenges this year!
 
 ## Updates
 
-Finished days (both stars): 1, 2, 3, 4, 5, 6
+Finished days (both stars): 1, 2, 3, 4, 5, 6, 7, 8, 9
 
 ## Benchmarks
 
@@ -23,12 +23,15 @@ Using `BenchmarkTools.jl` solving both parts of each day:
 Run on Julia 1.6.1 + Ryzen 9 5900X 12-Core (~4Ghz)
 | Day | Time | Allocated memory |
 |----:|-----:|-----------------:|
-| 1 | 246.100 μs | 124.92 KiB |
-| 2 | 470.100 μs | 290.09 KiB |
-| 3 | 1.266 ms | 1.45 MiB |
-| 4 | 2.769 ms | 2.68 MiB |
-| 5 | 3.877 ms | 33.20 MiB |
-| 6 | 95.300 μs | 107.92 KiB |
+| 1 | 245.900 μs | 124.92 KiB |
+| 2 | 472.900 μs | 290.09 KiB |
+| 3 | 1.308 ms | 1.45 MiB |
+| 4 | 2.901 ms | 2.68 MiB |
+| 5 | 4.400 ms | 33.20 MiB |
+| 6 | 97.500 μs | 107.92 KiB |
+| 7 | 150.700 μs | 95.48 KiB |
+| 8 | 2.524 ms | 3.30 MiB |
+| 9 | 17.522 ms | 7.55 MiB |
 
 ## Usage
 
