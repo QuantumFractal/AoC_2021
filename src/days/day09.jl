@@ -5,100 +5,86 @@ using StatsBase
 using Statistics
 
 
+const OUT = 9
+const UP = CartesianIndex(0, 1)
+const DOWN = CartesianIndex(0, -1)
+const LEFT = CartesianIndex(-1, 0)
+const RIGHT = CartesianIndex(1, 0)
+const KERNEL = [UP, DOWN, LEFT, RIGHT]
+
+
 function solve(input::String = getRawInput(9))
-    return [part1(input), part2(input)]
-end
-
-
-function part1(input)
+    # Fairly standard split / parse to Int
     mat = map(c -> parse(Int, c), hcat(collect.(split(input))...))
-    width, height = size(mat)
 
+    seeds, part1_answer = part1(mat)
+    return [part1_answer, part2(seeds, mat)]
+end
+
+""" Part 1 is fairly easy, we iterate over all the grids,
+    check their neighborhood (4 surrounding cells) adding
+    ones where they're less than their surroundings.
+"""
+function part1(mat)
+    seeds = []
     total_risk = 0
-    for i in 1:width
-        for j in 1:height
-            center = get(mat, CartesianIndex(i,j), 0)
-            up = get(mat, CartesianIndex(i,j+1), 10)
-            down = get(mat, CartesianIndex(i,j-1), 10)
-            left = get(mat, CartesianIndex(i+1,j), 10)
-            right = get(mat, CartesianIndex(i-1,j), 10)
+    for idx in CartesianIndices(mat)
+        center = get(mat, idx, 0)
 
-            if (center < up) && (center < down) && (center < left) && (center < right)
-                total_risk += center + 1
-            end
+        # This line is generating the 4-neighbors, and checking their values against
+        # the center one. If all 4 neighbors are larger, it's a "risk"
+        if length(filter(idx -> get(mat, idx, OUT) > center, .+([idx], KERNEL))) == 4
+            total_risk += center + 1
+            push!(seeds, idx)
         end
     end
 
-    return total_risk
+    # We'll use the seeds later :)
+    return seeds, total_risk
 end
 
 
-""" For people who checked this solution before I cleaned it up, LMAO
-    This is my first time writing a flood fill. It's not pretty, it's fast (enough)
-    and it's correct
+""" Part2 is a bit more complicated, but we can use the seeds from part1
+    to have a great starting point for our flood fill!
 """
-function part2(input)
-    mat = map(c -> c == '9', hcat(collect.(split(input))...))
-
-    visited = Dict(idx => false for idx in CartesianIndices(size(mat)))
-
-    width, height = size(mat)
-
-    UP = CartesianIndex(0, 1)
-    RIGHT = CartesianIndex(1, 0)
-
-    queue = []
+function part2(seeds, mat)
     pool_sizes = []
-    for i in 1:width
-        for j in 1:height
-            idx = CartesianIndex(i, j)
 
-            val = get(mat, idx, true)
+    # Instead of iterating over the entire map again,
+    # start with areas of interest.
+    for seed in seeds
+        val = mat[seed]
+        if val == OUT
+            continue
+        end
 
-            if visited[idx] || val == true
-                continue
-            end
-
-            # Flood fill I guess?
-            queue = [idx]
-            sz = 0
-            while length(queue) != 0
-                current = popat!(queue, 1)
-
-                if visited[current] == true
-                    continue
-                end
-
+        # This is a very standard 4-way flood fill.
+        # We maintain our own queue because Julia (well and LLVM) 
+        # isn't optimized for Tail-Calls 
+        queue = [seed]
+        sz = 0
+        while length(queue) != 0
+            cur = popat!(queue, 1)
+            if mat[cur] != OUT
+                # Increment the size of the pool, this is the only important 
+                # piece of information we want out of this operation.
                 sz += 1
-                visited[current] = true
-                val = mat[current]
-                if val == true
-                    continue
-                end
-                if val == false
-                    if !get(mat, current + UP, true)
-                        push!(queue, current + UP)
-                    end
-                    if !get(mat, current - UP, true)
-                        push!(queue, current - UP)
-                    end
-                    if !get(mat, current + RIGHT, true)
-                        push!(queue, current + RIGHT)
-                    end
-                    if !get(mat, current - RIGHT, true)
-                        push!(queue, current - RIGHT)
-                    end
-                end
+
+                # We're using the same line from part1 to figure out valid neighbords and
+                # add them to be processed.
+                push!(queue, filter(idx -> get(mat, idx, OUT) != OUT, .+([cur], KERNEL))...)
             end
 
-            if sz > 1
-                push!(pool_sizes, sz)
-            end
+            mat[cur] = OUT
+        end
+
+        if sz > 1
+            push!(pool_sizes, sz)
         end
     end
 
-    topvals = sort(pool_sizes, rev=true)[1:3]
-    return topvals[1] * topvals[2] * topvals[3]
+    # Find the top 3, and multiply them together.
+    return reduce(*, sort(pool_sizes, rev = true)[1:3])
 end
 
 end # module
