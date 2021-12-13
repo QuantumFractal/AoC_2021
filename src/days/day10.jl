@@ -85,6 +85,8 @@ function part2(lines)
             last_char = char
         end
 
+        println("Corrupted? $corrupted, Char: $last_char")
+
         if !corrupted
             push!(scores, 0)
             reverse!(stack)
@@ -96,7 +98,7 @@ function part2(lines)
     end
 
     sort!(scores)
-    return scores[floor(Int, length(scores) / 2)+1]
+    return scores[floor(length(scores) / 2)+1]
 end
 
 end # module

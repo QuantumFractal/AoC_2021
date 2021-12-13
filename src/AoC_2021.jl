@@ -10,7 +10,7 @@ export getRawInput
     Thanks!
     https://github.com/goggle/AdventOfCode2020.jl/blob/master/src/AdventOfCode2020.jl
 """
-solvedDays = 1:10
+solvedDays = 1:12
 
 for day in solvedDays
     ds = @sprintf("%02d", day)
