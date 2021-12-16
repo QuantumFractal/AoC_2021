@@ -1,9 +1,16 @@
 # Look! Another Advent of Code Repo!
 
-This time written in [Julia](https://julialang.org/)
+## DISCLAIMER
 
-Well folks, it's that time of year again.
-Time for the Advent of Code.
+```
+   This place is not a place of honor... no highly esteemed deed is commemorated here... nothing valued is here.
+    What is here was dangerous and repulsive to us. This message is a warning about danger.
+    The danger is in a particular location... it increases towards a center... the center of danger is here... of a particular size and shape, and below us.
+    The danger is still present, in your time, as it was in ours.
+    The danger is to the body, and it can kill.
+    The form of the danger is an emanation of energy.
+    The danger is unleashed only if you substantially disturb this place physically. This place is best shunned and left uninhabited.
+```
 
 
 ## Wait, what's Advent of Code?
