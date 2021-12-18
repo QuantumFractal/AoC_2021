@@ -3,7 +3,6 @@ module day18
 using AoC_2021
 using Base.Iterators
 
-
 struct Snail
     left::Union{Int, Snail}
     right::Union{Int, Snail}
@@ -20,7 +19,6 @@ add(left::Snail, right::Snail) = Snail(left, right)
 add(left::Int, right::Int) = left + right
 add(n::Int, s::Snail) = Snail(add(n, s.left), s.right)
 add(s::Snail, n::Int) = Snail(s.left, add(s.right, n))
-
 
 explode(s::Int, d::Int) = (false, s, 0, 0)
 
@@ -85,8 +83,5 @@ end
 function part2(snails::Vector{Snail})
     return max(magnitude.(map(((a, b),) -> normalize(add(a,b)), Iterators.product(snails, snails)))...)
 end
-
-
-
 
 end # module
